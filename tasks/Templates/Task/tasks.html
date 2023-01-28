@@ -1,0 +1,45 @@
+{% extends 'Layouts/principal.html' %}
+{% block content %}
+{% if esconder %}
+<h1 class="text-center">Tasks Completed</h1>
+{% else %}
+<h1 class="text-center">Tasks Pending</h1>
+<a href="{% url 'create_task' %}"><button type="button" class="btn btn-success w-100 d-block"><i class="bi bi-plus"></i>Crear Tarea</button></a>
+{% endif %}
+<div class="mt-5">
+{% for task in tasks %}
+    {% if task.important %}
+    <div class="card mb-3 border border-danger">
+    {% else %}
+    <div class="card mb-3 border border-primary-subtle">
+    {% endif %}
+    <div class="card-header row">
+        <div class="col-10 d-flex align-items-center">
+            {% if task.important %}
+                <small class="text-danger me-2 fs-3"><i class="bi bi-exclamation-circle"></i></small>
+            {% endif %}
+            <h2>{{task.title}}</h2>
+            <a href="{% url 'task_detail' task.id %}" class="text-warning text-decoration-none ps-3 fs-5"><i class="bi bi-pencil-square"></i> Editar</a>
+        </div>
+        
+        {% if not esconder %}
+            <form class="col-2 my-auto" action="{% url 'complete_task' task.id %}" method="POST">
+                {% csrf_token %}
+                <button class="btn border border-success" type="submit"><i class="bi bi-check2 text-success"></i> Completar</button>
+            </form>
+        {% else %}
+            <p class="col-2 text-center my-auto">{{task.datecompleted|date:'M j Y:i'}} <i class="bi bi-check2-all text-primary fs-5"></i></p>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        <blockquote class="blockquote mb-0">
+            <p>Descripcion: {{task.description}}</p>
+            <footer class="blockquote-footer">Creada por <cite title="Source Title">{{task.user.username}}</cite></footer>
+        </blockquote>
+    </div>
+</div>
+
+    
+{% endfor %}
+</div>
+{% endblock %}

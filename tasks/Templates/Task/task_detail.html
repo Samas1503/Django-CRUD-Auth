@@ -1,0 +1,40 @@
+{% extends 'Layouts/principal.html' %}
+{% block content %}
+<div class="card col-md-10 offset-md-1 mt-5">
+    <div class="card-body my-2">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h1>{{task.title}}</h1>
+            <form action="{% url 'delete_task' task.id %}" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-danger" type="submit"><i class="bi bi-trash-fill"></i> Eliminar</button>
+            </form>
+        </div>
+    
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{error}}
+            </div>
+        {% endif %}
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-control mb-3">
+                <label for="title" class="form-label">Titulo de Tarea</label>
+                <input type="text" class="form-control" id="title" value="{{ task.title }}" name="title">
+            </div>
+            <div class="form-control mb-3">
+                <label for="description" class="form-label">Decripcion de Tarea</label>
+                <textarea class="form-control" id="description" name="description" rows="3">{{ task.description }}</textarea>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input d-none" type="checkbox" id="important" checked="{{task.important}}" name="important">
+                {% if not task.important %}
+                    <label onclick="mostrarCheck()" class="form-check-label d-flex" for="important"><p class="my-auto">Importante</p><i class="bi bi-toggle-off fs-3 text-primary ms-2" id="toggle"></i></label>
+                {% else %}
+                    <label onclick="mostrarCheck()" class="form-check-label d-flex" for="important"><p class="my-auto">Importante</p><i class="bi bi-toggle-on fs-3 text-primary ms-2" id="toggle"></i></label>
+                {% endif %}
+            </div>
+            <button class="btn btn-warning d-block w-100" type="submit"><i class="bi bi-pencil-fill"></i> Modificar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'Layouts/principal.html' %}
+{% block content %}
+<div class="card col-md-4 offset-md-4 mt-5">
+    <div class="card-body my-2">
+        <h1 class="text-center pb-5 pt-3">Create Tasks</h1>
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{error}}
+            </div>
+        {% endif %}
+        <form action="{% url 'create_task' %}" method="POST">
+            {% csrf_token %}
+            <div class="form-control mb-3">
+                <label for="title" class="form-label">Titulo de Tarea</label>
+                <input type="text" class="form-control" id="title" name="title">
+            </div>
+            <div class="form-control mb-3">
+                <label for="description" class="form-label">Decripcion de Tarea</label>
+                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input d-none" type="checkbox"  id="important" name="important">
+                <label onclick="mostrarCheck()" class="form-check-label d-flex align-items-center" for="important">Importante<i class="bi bi-toggle-off fs-3 text-primary ms-2" id="toggle"></i></label>
+            </div>
+            <button class="btn btn-success" type="submit">Crear</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
