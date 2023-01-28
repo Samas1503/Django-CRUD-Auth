@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+# Don't forget to import os at the beginning of the file
 import os
+# Don't forget to import dj-database-url at the beginning of the file
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,7 +33,7 @@ DEBUG = 'RENDER' not in os.environ
 ALLOWED_HOSTS = []
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
+if RENDER_EXTERNAL_HOSTNAME:    
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
@@ -80,12 +82,12 @@ WSGI_APPLICATION = 'djangocrud.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
+    'default': dj_database_url.config(        # Feel free to alter this value to suit your needs.        
         default='sqlite:///db.sqlite3',
-        conn_max_age=600
+        conn_max_age=600    
     )
 }
 
@@ -126,9 +128,9 @@ USE_TZ = True
 
 # This setting tells Django at which URL static files are going to be served to the user.
 # Here, they well be accessible at your-domain.onrender.com/static/...
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 # Following settings only make sense on production and may break development environments.
-if 'RENDER' in os.environ:    # Tell Django to copy statics to the `staticfiles` directory
+if not DEBUG:    # Tell Django to copy statics to the `staticfiles` directory
     # in your application directory on Render.
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     # Turn on WhiteNoise storage backend that takes care of compressing static files
